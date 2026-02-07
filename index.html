@@ -1,140 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cinematic Video Prompts</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f7fb;
-      padding: 40px;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pro YouTube Player</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+}
+
+/* MAIN LAYOUT */
+
+.app{
+    display:flex;
+    width:95%;
+    height:92vh;
+    margin:auto;
+    background:white;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 25px 70px rgba(0,0,0,0.25);
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:280px;
+    background:#111827;
+    color:white;
+    padding:20px;
+    overflow-y:auto;
+}
+
+.sidebar h2{
+    margin-bottom:20px;
+    font-weight:500;
+}
+
+.history-item{
+    background:#1f2937;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:10px;
+    cursor:pointer;
+    transition:.3s;
+    font-size:14px;
+}
+
+.history-item:hover{
+    background:#374151;
+    transform:scale(1.03);
+}
+
+/* PLAYER AREA */
+
+.main{
+    flex:1;
+    padding:30px;
+    display:flex;
+    flex-direction:column;
+}
+
+.title{
+    font-size:28px;
+    font-weight:600;
+    margin-bottom:20px;
+}
+
+.input-group{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+input{
+    flex:1;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid #ddd;
+    font-size:16px;
+}
+
+input:focus{
+    outline:none;
+    border-color:#667eea;
+}
+
+button{
+    padding:14px 28px;
+    border:none;
+    border-radius:12px;
+    background:#667eea;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    background:#5563c1;
+}
+
+.player{
+    flex:1;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,0.2);
+}
+
+iframe{
+    width:100%;
+    height:100%;
+    border:none;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    .app{
+        flex-direction:column;
+        height:auto;
     }
-    .container {
-      max-width: 1000px;
-      margin: auto;
+
+    .sidebar{
+        width:100%;
+        display:flex;
+        overflow-x:auto;
+        gap:10px;
     }
-    .scene {
-      background: white;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      position: relative;
+
+    .history-item{
+        min-width:200px;
     }
-    h2 {
-      margin-top: 0;
-      color: #2c3e50;
-    }
-    pre {
-      white-space: pre-wrap;
-      font-family: "Courier New", monospace;
-      background: #f9fafc;
-      padding: 15px;
-      border-radius: 8px;
-      overflow-x: auto;
-    }
-    button {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      padding: 8px 14px;
-      border: none;
-      background: #4CAF50;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    button:hover {
-      background: #43a047;
-    }
-  </style>
+}
+
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>Cinematic YouTube-Safe Video Prompts (With Pure Hindi Dialogues)</h1>
 
-    <div class="scene">
-      <button onclick="copyText('scene1')">Copy</button>
-      <h2>🎬 Scene 1 – Morning in the Village (Emotional + Cinematic Opening)</h2>
-      <pre id="scene1">Create a cinematic sunrise scene in a peaceful Indian village with golden morning light, soft fog over green fields, birds flying in the sky, and gentle wind moving the trees. Show a highly detailed grass hut surrounded by colorful wildflowers and fresh greenery.
+<div class="app">
 
-A very cute 5-year-old fair-skinned boy with blue eyes and curly black hair is sleeping on a traditional woven bed outside the hut. He is wearing a stylish red floral shirt and blue jeans.
-
-An elderly woman in a simple blue saree walks toward him carrying a water bucket. As she trips slightly, some water splashes on her, creating a natural and realistic moment (keep it light and non-harmful). She wakes the boy with expressive emotion and says in Hindi:
-
-"अरे ओ निकम्मे, उठ जा! सुबह हो गई है। जा, मेरे लिए एक काला घोड़ा लेकर आ।"
-
-Camera slowly pushes toward the boy as he wakes up, smiles innocently, and replies in a cute energetic voice:
-
-"जाता हूँ, माँ!"
-
-In the background, show a beautiful white horse calmly standing near the hut, glowing slightly in the morning light.
-
-Style: Hyper-realistic, cinematic lighting, shallow depth of field, ultra HD, natural color grading.
-Important: No captions, no on-screen text.</pre>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>📺 History</h2>
+        <div id="history"></div>
     </div>
 
-    <div class="scene">
-      <button onclick="copyText('scene2')">Copy</button>
-      <h2>🎬 Scene 2 – The Determined Journey (Adventure Begins)</h2>
-      <pre id="scene2">Show the boy walking confidently on a scenic village pathway lined with lush green trees forming a natural arch overhead. Sun rays filter through leaves, creating magical light streaks. Add butterflies, distant farms, and soft wind effects for realism.
+    <!-- MAIN -->
+    <div class="main">
 
-The camera alternates between wide drone shots and close-ups to create a movie-like feel. The boy speaks with determination and innocence:
+        <div class="title">🎬 Pro YouTube Player</div>
 
-"मेरी माँ मुझे निकम्मा कहती हैं। आज मैं कहीं से भी एक काला घोड़ा लेकर आऊँगा, तब मेरी माँ खुश हो जाएँगी।"
+        <div class="input-group">
+            <input id="link" placeholder="Paste YouTube link and press GO"/>
+            <button onclick="addVideo()">Go</button>
+        </div>
 
-Make the environment vibrant, colorful, and visually rich to keep viewers engaged.
+        <div class="player">
+            <iframe id="player" allowfullscreen></iframe>
+        </div>
 
-Style: Ultra realistic, cinematic, high dynamic range, smooth camera movement.
-Important: No captions, no text overlays.</pre>
     </div>
 
-    <div class="scene">
-      <button onclick="copyText('scene3')">Copy</button>
-      <h2>🎬 Scene 3 – The Magical Forest (Wonder + Curiosity)</h2>
-      <pre id="scene3">Transition into a breathtaking forest filled with tall ancient trees, glowing light beams, soft mist, and detailed foliage. Add subtle magical particles floating in the air to build anticipation while keeping it natural and YouTube-friendly.
+</div>
 
-The boy walks deeper into the forest and calls out playfully:
+<script>
 
-"अरे ओ काले घोड़े! बाहर आ जा, नहीं तो तेरी पिटाई कर दूँगा। चल, मेरे साथ — माँ ने बुलाया है।"
+// Load history on start
+let history = JSON.parse(localStorage.getItem("ytHistory")) || [];
+renderHistory();
 
-Suddenly, a magnificent Pegasus emerges gracefully from behind the trees, flying slowly and landing near the boy. The creature should look majestic yet friendly — white wings, gentle eyes, and realistic feather motion.
+function extractVideoID(url){
+    try{
+        const u = new URL(url);
 
-Camera slowly zooms out to reveal the grand scale of the forest and the magical meeting.
+        if(u.searchParams.get("v")) return u.searchParams.get("v");
+        if(u.hostname.includes("youtu.be")) return u.pathname.slice(1);
+        if(u.pathname.includes("/live/")) return u.pathname.split("/live/")[1];
+        if(u.pathname.includes("/embed/")) return u.pathname.split("/embed/")[1];
 
-Style: Hyper-realistic fantasy blended with nature realism, cinematic orchestration feel.
-Important: No captions, no text.</pre>
-    </div>
-
-    <div class="scene">
-      <button onclick="copyText('scene4')">Copy</button>
-      <h2>🎬 Scene 4 – Heartwarming Return (Emotional Payoff + Shareable Ending)</h2>
-      <pre id="scene4">Golden sunset lighting surrounds the hut as the boy proudly stands beside the Pegasus. Fireflies begin to appear, and the sky shows soft orange and pink hues for a visually emotional ending.
-
-The boy happily calls toward the hut:
-
-"सबसे प्यारी माँ, बाहर आओ! मैं तुम्हारे लिए घोड़ा लाया हूँ।"
-
-The elderly woman steps outside, surprised and overjoyed. With a warm smile she says:
-
-"अब तो कोई मेरे हीरे जैसे बेटे के लिए लाइक और सब्सक्राइब कर दो!"
-
-End with a wide cinematic shot showing the hut, glowing sky, and the Pegasus — creating a memorable YouTube story ending without using any on-screen captions.
-
-Style: Emotional, ultra-HD, cinematic, highly detailed environment, strong storytelling visuals.
-Important: No captions, no written text, fully YouTube policy-friendly, safe for all audiences.</pre>
-    </div>
-
-  </div>
-
-  <script>
-    function copyText(id) {
-      const text = document.getElementById(id).innerText;
-      navigator.clipboard.writeText(text);
-      alert('Prompt copied!');
+        return null;
+    }catch{
+        return null;
     }
-  </script>
+}
+
+function addVideo(){
+
+    const url = document.getElementById("link").value.trim();
+    const id = extractVideoID(url);
+
+    if(!id){
+        alert("Invalid YouTube link");
+        return;
+    }
+
+    playVideo(id);
+
+    // avoid duplicates
+    history = history.filter(v => v !== id);
+    history.unshift(id);
+
+    // limit history
+    if(history.length > 20)
+        history.pop();
+
+    localStorage.setItem("ytHistory", JSON.stringify(history));
+
+    renderHistory();
+}
+
+function playVideo(id){
+    document.getElementById("player").src =
+        `https://www.youtube.com/embed/${id}?autoplay=1`;
+}
+
+function renderHistory(){
+
+    const container = document.getElementById("history");
+    container.innerHTML = "";
+
+    history.forEach(id => {
+
+        const div = document.createElement("div");
+        div.className = "history-item";
+        div.innerHTML = `
+            ▶ Video ${id.substring(0,6)}...
+        `;
+
+        div.onclick = () => playVideo(id);
+
+        container.appendChild(div);
+    });
+}
+
+</script>
+
 </body>
 </html>
